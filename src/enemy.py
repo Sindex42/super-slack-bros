@@ -1,5 +1,6 @@
 ''' Enemy module '''
 
+from random import sample
 import pygame as pg
 from constants import TILESIZE, BLACK
 
@@ -20,6 +21,26 @@ class Enemy(pg.sprite.Sprite):
         self.y_pos = y_pos
         self.rect.x = TILESIZE * x_pos + 1
         self.rect.y = TILESIZE * y_pos + 1
+
+    def move(self):
+        ''' Defines enemy movement '''
+
+        movement = sample(["up", "down", "left", "right"], 1)
+        d_x = 0
+        d_y = 0
+
+        if movement == ["up"]:
+            d_y = -1
+        elif movement == ["down"]:
+            d_y = 1
+        elif movement == ["left"]:
+            d_x = -1
+        else:
+            d_x = 1
+
+        if not self.collide_with_walls(d_x, d_y) and not self.collide_with_hero(d_x, d_y):
+            self.x_pos += d_x
+            self.y_pos += d_y
 
     def collide_with_walls(self, d_x=0, d_y=0):
         ''' Check for wall collision '''
